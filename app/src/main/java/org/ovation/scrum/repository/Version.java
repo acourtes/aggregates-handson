@@ -1,13 +1,13 @@
 package org.ovation.scrum.repository;
 
 public class Version {
-    private long version;
+    private Long version;
 
     public Version() {
-        version = 1;
+        version = 1L;
     }
 
-    public long version() {
+    public Long version() {
         return version;
     }
 
