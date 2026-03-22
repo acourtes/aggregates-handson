@@ -12,4 +12,11 @@ public class ProductId {
     public UUID getId() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "ProductId{" +
+                "id=" + id +
+                '}';
+    }
 }

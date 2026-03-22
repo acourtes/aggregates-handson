@@ -1,7 +1,5 @@
 package org.ovation.scrum.repository;
 
-import java.util.UUID;
-
 public class Product {
 
     private ProductId productId;
