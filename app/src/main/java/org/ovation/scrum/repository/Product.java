@@ -1,6 +1,8 @@
 package org.ovation.scrum.repository;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 public class Product {
 
@@ -8,10 +10,12 @@ public class Product {
     private String description;
     private String name;
     private Version version;
+    private final Set<Release> releases;
 
     public Product(String description, String name) {
         this.description = description;
         this.name = name;
+        releases = new HashSet<>();
     }
 
     public ProductId getProductId() {
@@ -42,5 +46,21 @@ public class Product {
 
     public void updateVersion() {
         version.updateVersion();
+    }
+
+    public void addRelease(Release release) {
+        releases.add(release);
+    }
+
+    public Set<Release> getReleases() {
+        return releases;
+    }
+
+    public void modifyDescriptionWith(String newDescription) {
+        this.description = newDescription;
+    }
+
+    public void modifyNameWith(String newName) {
+        this.name = newName;
     }
 }
