@@ -1,5 +1,6 @@
 package org.ovation.scrum.repository;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,9 +8,15 @@ import static org.assertj.core.api.Assertions.assertThatException;
 
 public class ProductRepositoryTest {
 
+    private static ProductRepository sut;
+
+    @BeforeAll
+    static void beforeAll() {
+        sut = new InMemoryProductRepository();
+    }
+
     @Test
     void should_save_a_product_with_no_id() {
-        ProductRepository sut = new ProductRepository();
         String name = "name";
         String description = "description";
         Product product = new Product(description, name);
@@ -23,7 +30,6 @@ public class ProductRepositoryTest {
 
     @Test
     void should_save_a_product_with_an_existing_id() {
-        ProductRepository sut = new ProductRepository();
         String name = "name";
         String description = "description";
         Product product = new Product(description, name);
@@ -41,7 +47,6 @@ public class ProductRepositoryTest {
 
     @Test
     void should_save_a_new_product_without_version() {
-        ProductRepository sut = new ProductRepository();
         String name = "name";
         String description = "description";
         Product product = new Product(description, name);
@@ -56,7 +61,6 @@ public class ProductRepositoryTest {
 
     @Test
     void should_save_a_product_with_existing_version() {
-        ProductRepository sut = new ProductRepository();
         String name = "name";
         String description = "description";
         Product product = new Product(description, name);
@@ -76,7 +80,6 @@ public class ProductRepositoryTest {
 
     @Test
     void should_raise_exception_when_product_has_version_equal_to_what_is_already_in_database() {
-        ProductRepository sut = new ProductRepository();
         String name = "name";
         String description = "description";
         Product product = new Product(description, name);
