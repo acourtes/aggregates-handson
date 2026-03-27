@@ -1,8 +1,13 @@
 package org.ovation.scrum.repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class InMemoryProductRepository implements ProductRepository {
+
+    private final List<Product> products = new ArrayList<>();
+
     @Override
     public Product save(Product product) {
         if (product.getProductId() == null) {
@@ -15,6 +20,7 @@ public class InMemoryProductRepository implements ProductRepository {
             checkProductVersion(product);
         }
 
+        products.add(product);
         return product;
     }
 
@@ -30,11 +36,8 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public Optional<Product> getById(ProductId productId) {
-        Product product = new Product("description", "name");
-        product.setProductId(productId);
-        Version version = new Version();
-        version.updateVersion();
-        product.setVersion(version);
-        return Optional.of(product);
+        return products.stream()
+                .filter(product -> product.getProductId().equals(productId))
+                .findFirst();
     }
 }

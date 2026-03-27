@@ -1,5 +1,6 @@
 package org.ovation.scrum.repository;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class ProductId {
@@ -18,5 +19,17 @@ public class ProductId {
         return "ProductId{" +
                 "id=" + id +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductId productId = (ProductId) o;
+        return Objects.equals(id, productId.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

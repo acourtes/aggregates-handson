@@ -1,8 +1,10 @@
 package org.ovation.scrum.repository;
 
 import org.jspecify.annotations.NonNull;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatException;
@@ -10,10 +12,10 @@ import static org.assertj.core.api.Assertions.assertThatException;
 public class ProductRepositoryTest {
 
     private static final ProductId productId = new ProductId();
-    private static ProductRepository sut;
+    private ProductRepository sut;
 
-    @BeforeAll
-    static void beforeAll() {
+    @BeforeEach
+    void setup() {
         sut = new InMemoryProductRepository();
     }
 
@@ -74,10 +76,22 @@ public class ProductRepositoryTest {
         Product product = getSimpleProduct();
         addProductIdToProduct(product);
         addVersionToProduct(product);
+        sut.save(product);
 
         assertThatException().isThrownBy(() -> sut.save(product))
                 .isInstanceOf(ProductException.class)
                 .withMessage("Product has wrong version");
+    }
+
+    @Test
+    void should_get_by_id_saved_product() {
+        Product product = getSimpleProduct();
+        sut.save(product);
+
+        Optional<Product> result = sut.getById(product.getProductId());
+
+        assertThat(result).isNotEmpty();
+        assertThat(result).contains(product);
     }
 
     private static void addVersionToProduct(Product product) {
