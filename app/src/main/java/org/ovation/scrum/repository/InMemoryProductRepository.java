@@ -1,25 +1,24 @@
 package org.ovation.scrum.repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 public class InMemoryProductRepository implements ProductRepository {
 
-    private final List<Product> products = new ArrayList<>();
+    private final Set<Product> products = new HashSet<>();
 
     @Override
     public Product save(Product product) {
         if (product.getProductId() == null) {
-            ProductId productId = new ProductId();
-            product.setProductId(productId);
-            Version version = new Version();
-            product.setVersion(version);
+            product.setProductId(new ProductId());
+            product.setVersion(new Version());
         } else {
             product.updateVersion();
             checkProductVersion(product);
         }
 
+        products.remove(product);
         products.add(product);
         return product;
     }

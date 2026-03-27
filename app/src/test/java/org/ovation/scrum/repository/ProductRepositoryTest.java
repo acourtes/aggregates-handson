@@ -127,6 +127,35 @@ public class ProductRepositoryTest {
         assertThat(result.getName()).isEqualTo(newName);
     }
 
+    @Test
+    void should_work_correctly_when_2_users_modify_concurrently_the_same_product() {
+        Product product = getSimpleProduct();
+        Product savedProduct = sut.save(product);
+        Product BobInstanceOfProduct = getProductFrom(savedProduct);
+        Product BarbaraInstanceOfProduct = getProductFrom(savedProduct);
+
+        String aBetterName = "A better name";
+        BobInstanceOfProduct.modifyNameWith(aBetterName);
+        sut.save(BobInstanceOfProduct);
+        Release release = new Release("Release 1");
+        BarbaraInstanceOfProduct.addRelease(release);
+        sut.save(BarbaraInstanceOfProduct);
+
+        Optional<Product> result = sut.getById(savedProduct.getProductId());
+
+        assertThat(result).isNotEmpty();
+        Product finalProduct = result.get();
+        assertThat(finalProduct.getName()).isEqualTo(aBetterName);
+        assertThat(finalProduct.getReleases()).containsOnly(release);
+    }
+
+    private static @NonNull Product getProductFrom(Product savedProduct) {
+        Product BarbaraInstanceOfProduct = getSimpleProduct();
+        BarbaraInstanceOfProduct.setProductId(savedProduct.getProductId());
+        BarbaraInstanceOfProduct.setVersion(new Version());
+        return BarbaraInstanceOfProduct;
+    }
+
     private static void addVersionToProduct(Product product) {
         Version version = new Version();
         product.setVersion(version);

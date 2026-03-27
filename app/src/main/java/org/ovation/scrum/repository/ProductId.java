@@ -10,10 +10,6 @@ public class ProductId {
         id = UUID.randomUUID();
     }
 
-    public UUID getId() {
-        return id;
-    }
-
     @Override
     public String toString() {
         return "ProductId{" +

@@ -1,6 +1,7 @@
 package org.ovation.scrum.repository;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -62,5 +63,17 @@ public class Product {
 
     public void modifyNameWith(String newName) {
         this.name = newName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(productId, product.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(productId);
     }
 }
